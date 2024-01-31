@@ -18,7 +18,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(result => {
     response.send(result)
-    console.log("phonebook:")
+    console.log('phonebook:')
     result.forEach(person => {
       console.log(person.name, person.number)
     })
@@ -44,21 +44,21 @@ app.get('/info', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
   Person.findByIdAndDelete(request.params.id)
-   .then(response.status(204).end())
+    .then(response.status(204).end())
 })
 
 app.post('/api/persons', (request, response, next) => {
   const newPerson = request.body
-  
+
   if(!newPerson.name) {
     return response.status(400).json({
-      error: "name missing"
+      error: 'name missing'
     })
-  } 
+  }
 
   if(!newPerson.number) {
     return response.status(400).json({
-      error: "number missing"
+      error: 'number missing'
     })
   }
 
@@ -78,13 +78,13 @@ app.post('/api/persons', (request, response, next) => {
 
 app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
-  
+
   const person = {
     name: body.name,
     number: body.number,
   }
 
-  Person.findByIdAndUpdate(request.params.id, person, {new: true, runValidators: true})
+  Person.findByIdAndUpdate(request.params.id, person, { new: true, runValidators: true })
     .then(updatedPerson => {
       response.json(updatedPerson)
     })
@@ -95,7 +95,7 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
   if (error.name === 'CastError') {
-    return response.status(400).send({error: 'malformatted id'})
+    return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     return response.status(400).send(error.message)
   }
@@ -107,5 +107,5 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-    console.log(`The server is running on port ${PORT}.`)
+  console.log(`The server is running on port ${PORT}.`)
 })
